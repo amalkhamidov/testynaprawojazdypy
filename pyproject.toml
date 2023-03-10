@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "testnapravo"
+version = "10.03.2023"
+description = ""
+authors = ["Khamidov Amal <khamidovamal@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+aiohttp = "^3.8.4"
+aiomisc = "^17.0.6"
+dynaconf = "^3.1.12"
+aiogram = {url = "https://github.com/aiogram/aiogram/archive/refs/heads/dev-3.x.zip"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
