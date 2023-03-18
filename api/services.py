@@ -1,6 +1,6 @@
 import aiomisc
 
-from api.tts_converter import TTSConverter
+from api.eleven_labs.tts_converter import TTSConverter
 from config import settings
 
 with aiomisc.entrypoint(
