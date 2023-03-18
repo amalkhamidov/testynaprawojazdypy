@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "testnapravo"
-version = "10.03.2023"
+version = "18.03.2023"
 description = ""
 authors = ["Khamidov Amal <khamidovamal@gmail.com>"]
 readme = "README.md"
