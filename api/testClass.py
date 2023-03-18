@@ -1,10 +1,11 @@
 import logging
+import typing
 from dataclasses import dataclass
 from typing import List
 
 import aiohttp
 
-from models.request import CourseModule, User, Subject, Slaid
+from models.request import CourseModule, User, Subject, Slaid, ErrorResponse
 
 
 @dataclass
@@ -17,7 +18,8 @@ class TestyNaprawoJazdyApi:
                       'Chrome/110.0.0.0 Safari/537.36',
     }
     base_url = 'https://api.testynaprawojazdy.eu/learning/course/'
-    
+    image_url = "https://eprawko.eu/platforma/_files/"
+
     def __post_init__(self):
         self.headers.update(jsessionid=self.jsessionid) if self.jsessionid else None
 
@@ -31,7 +33,6 @@ class TestyNaprawoJazdyApi:
                     'https://api.testynaprawojazdy.eu/eprawko-rest/login/',
                     headers=self.headers,
                     data=auth_data,
-                    ssl=False
             ) as response:
                 response = await response.json()
                 if not response:
@@ -49,7 +50,6 @@ class TestyNaprawoJazdyApi:
                     f'{self.base_url}'
                     f'modules/196',
                     headers=self.headers,
-                    ssl=False
             ) as response:
                 courses_data = await response.json()
 
@@ -63,13 +63,12 @@ class TestyNaprawoJazdyApi:
                     for course in courses_data
                 ]
 
-    async def get_subjects(self, course_id: int) -> List[Subject]:
+    async def get_subjects(self, module_id: int) -> List[Subject]:
         async with aiohttp.ClientSession(headers=self.headers) as session:
             async with session.get(
                     f'{self.base_url}'
-                    f'subjects/{course_id}',
+                    f'subjects/{module_id}',
                     headers=self.headers,
-                    ssl=False
             ) as response:
                 subjects_data = await response.json()
 
@@ -88,7 +87,6 @@ class TestyNaprawoJazdyApi:
                     f'{self.base_url}'
                     f'slaids/{subject_id}/{method_code}',
                     headers=self.headers,
-                    ssl=False
             ) as response:
                 slides_data = await response.json()
 
@@ -96,3 +94,25 @@ class TestyNaprawoJazdyApi:
                     Slaid(**slide)
                     for slide in slides_data
                 ]
+
+    async def get_slide(self, subject_id: int, slide_id: int) -> typing.Union[Slaid, ErrorResponse]:
+        async with aiohttp.ClientSession(headers=self.headers) as session:
+
+            async with session.get(
+                    f'{self.base_url}'
+                    f'slaid/{subject_id}/{slide_id}',
+                    headers=self.headers,
+            ) as response:
+                slide_data = await response.json()
+                if slide_data.get("error"):
+                    return ErrorResponse(**slide_data)
+
+                return Slaid(**slide_data)
+
+    async def get_image(self, image_url: str) -> bytes:
+        async with aiohttp.ClientSession(headers=self.headers) as session:
+            async with session.get(
+                    self.image_url + image_url,
+                    headers=self.headers,
+            ) as response:
+                return await response.read()

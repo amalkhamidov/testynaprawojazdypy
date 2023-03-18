@@ -6,11 +6,18 @@ authors = ["Khamidov Amal <khamidovamal@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "~3.10"
 aiohttp = "^3.8.4"
 aiomisc = "^17.0.6"
 dynaconf = "^3.1.12"
 aiogram = {url = "https://github.com/aiogram/aiogram/archive/refs/heads/dev-3.x.zip"}
+markdownify = "^0.11.6"
+sqlalchemy = "^2.0.5.post1"
+asyncpg = "^0.27.0"
+greenlet = "^2.0.2"
+alembic = "^1.10.2"
+psycopg2-binary = "^2.9.5"
+langdetect = "^1.0.9"
 
 
 [build-system]

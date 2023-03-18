@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 from dataclasses import dataclass
 
 
@@ -28,16 +28,18 @@ class CourseModule:
 
 
 @dataclass
-class Slide:
-    id: int
-    content: str
-
-
-@dataclass
 class Subject:
     id: int
     name: str
     slaidsNumber: int
+
+
+@dataclass
+class Attachment:
+    name: str
+    type: str
+    file: str
+    autostart: bool
 
 
 @dataclass
@@ -50,4 +52,13 @@ class Slaid:
     content: str
     module: Optional[str]
     subject: Optional[str]
-    attachements: Optional[str]
+    attachements: Optional[List[dict]]
+
+
+@dataclass
+class ErrorResponse:
+    timestamp: Optional[int] = None
+    status: Optional[str] = None
+    error: Optional[str] = None
+    message: Optional[str] = None
+    path: Optional[str] = None
