@@ -1,12 +1,8 @@
-import asyncio
-from typing import Union
+from concurrent.futures import ThreadPoolExecutor
 
 import asyncpg
 from bs4 import BeautifulSoup
 from langdetect import detect, detector_factory
-from concurrent.futures import ThreadPoolExecutor
-
-from config import settings
 
 # Initialize langdetect
 detector_factory.init_factory()
@@ -52,6 +48,7 @@ def process_text(text):
     polish_text = polish_text.strip()
 
     return english_text, polish_text
+
 
 class TextProcessor:
     def __init__(self, db_name, db_user, db_password, db_host, db_port=None):
@@ -115,7 +112,6 @@ class TextProcessor:
         async with pool.acquire() as conn:
             records = await conn.fetch("SELECT id, formatted_content FROM slides")
             return [(record['id'], record['formatted_content']) for record in records]
-
 
     async def main(self):
         """
