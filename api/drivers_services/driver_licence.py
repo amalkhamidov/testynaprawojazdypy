@@ -97,7 +97,6 @@ class TestyNaprawoJazdyApi:
 
     async def get_slide(self, subject_id: int, slide_id: int) -> typing.Union[Slaid, ErrorResponse]:
         async with aiohttp.ClientSession(headers=self.headers) as session:
-
             async with session.get(
                     f'{self.base_url}'
                     f'slaid/{subject_id}/{slide_id}',

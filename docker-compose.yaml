@@ -8,3 +8,19 @@ services:
       POSTGRES_PASSWORD: "6WHACK*inclose2"
     ports:
       - "5432:5432"
+
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass 9#UxCcI*obBbeZm!Q1r567@K&wYj0
+    volumes:
+      - cache:/data
+
+volumes:
+  postgres:
+    driver: local
+  cache:
+    driver: local
+
